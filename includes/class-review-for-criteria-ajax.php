@@ -44,6 +44,7 @@ class Review_For_Criteria_AJAX
         // Backend AJAX calls
         if (current_user_can('manage_options')) {
             add_action('wp_ajax_admin_backend_call', array($this, 'ajax_backend_call'));
+	        add_action('wp_ajax_admin_get_storages_call', array($this, 'ajax_get_storages_call'));
         }
 
         // Frontend AJAX calls
@@ -79,7 +80,7 @@ class Review_For_Criteria_AJAX
     {
 
         // Security check
-        check_ajax_referer('referer_id', 'nonce');
+        check_ajax_referer('reviews', 'security');
 
         $response = 'OK';
         // Send response in JSON format
@@ -89,6 +90,29 @@ class Review_For_Criteria_AJAX
 
         die();
     }
+	public function ajax_get_storages_call()
+	{
+
+		// Security check
+		check_ajax_referer('reviews', 'security');
+		$args = array(
+			's'         => trim( esc_attr( strip_tags( $_POST['s'] ) ) ),
+			'post_type' => 'entries',
+			'fields' => array('id', 'post_name'),
+		);
+		$query = new WP_Query($args);
+		$items = array();
+		while ($query->have_posts()): $query->the_post();
+			$items[] = array('value' => get_the_ID(), 'label' => get_the_title());
+		endwhile;
+		wp_reset_postdata();
+		// Send response in JSON format
+		// wp_send_json( $response );
+		// wp_send_json_error();
+		wp_send_json_success($items);
+
+		die();
+	}
 
     /**
      * Handle AJAX: Frontend Example

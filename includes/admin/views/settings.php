@@ -71,7 +71,33 @@ submit_button();
 
         </div><!-- #post-body-->
 
-        <br class="clear">
+        <div id="criteria-dialog" title="Create new criteria">
+            <p class="validateTips">All form fields are required.</p>
+
+            <form id="criteria-dialog-form">
+                <table>
+                    <tr>
+                        <th><label for="name">Criteria</label></th>
+                        <td>
+                            <input type="text" name="criteria" id="criteria" class="text ui-widget-content ui-corner-all">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><label for="explanation">Explanation</label></th>
+                        <td>
+                            <textarea name="explanation" id="explanation" cols="30" rows="10" class="text ui-widget-content ui-corner-all"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><label for="weight">Weight</label></th>
+                        <td><input type="number" name="weight" id="weight" class="text ui-widget-content ui-corner-all">%</td>
+                    </tr>
+                    <tr>
+                        <td><input type="submit" tabindex="-1" style="position:absolute; top:-1000px"></td>
+                    </tr>
+                </table>
+            </form>
+        </div>
     </div>  <!-- #poststuff -->
 
 

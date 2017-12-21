@@ -129,7 +129,7 @@ class Review_For_Criteria_Settings
             ),
         ),
         array(
-            'name'    => 'review_for_criteria_text_2',
+            'name'    => 'review_for_criteria_text_1',
             'title'   => 'Small Text Field',
             'section' => 'section_one',
             'field'   => array(
@@ -301,6 +301,18 @@ Mauris lectus augue, mollis eget ultricies quis, gravida vitae mauris.
 
             ),
         ),
+	    array(
+		    'name'    => 'review_for_criteria_options',
+		    'title'   => 'Criteria for review storage',
+		    'section' => 'section_six',
+		    'value'   => [],
+		    'field'   => array(
+			    'type'        => 'addable-options',
+			    'description' => 'Click on Add Criteria',
+                'class' => 'review_for_criteria_options_hidden'
+
+		    ),
+	    ),
     );
 
     /**
@@ -538,6 +550,37 @@ break;
                 </div>
                 <?php
 break;
+            case 'addable-options': ?>
+
+                <?php $tds = $setting_value ? json_decode($setting_value) : []; ?>
+
+                <div class="addable-options">
+                    <table class="criteria-table ui-widget ui-widget-content">
+                        <thead>
+                            <tr>
+                                <th>Criteria</th>
+                                <th>Explanation</th>
+                                <th>Weight</th>
+                                <td>Action</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <?php foreach ($tds as $td): ?>
+                            <tr>
+                                <td><input class="criteria-table-field criteria-table-field-criteria" data-fname="criteria" value="<?php echo esc_attr($td->criteria) ?>"></td>
+                                <td><textarea class="criteria-table-field criteria-table-field-explanation" data-fname="explanation"><?php echo esc_attr($td->explanation) ?></textarea></td>
+                                <td><input class="criteria-table-field criteria-table-field-weight" type="number" data-fname="weight" value="<?php echo esc_attr($td->weight) ?>"></td>
+                                <td><button class="delete-criteria" type="button" data-critid="<?php echo esc_attr($td->criteria) ?>">Delete</button></td>
+                            </tr>
+                        <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                    <button type="button" class="button add-criteria">Add Criteria</button>
+                    <input type="hidden" class="<?php echo $field_class ?>" name="<?php echo $setting_name ?>" id="<?php echo $setting_name ?>" value="<?php echo esc_attr($setting_value) ?>">
+                </div>
+
+                <?php
+                break;
             // All other types, eg: text, password, hidden, etc.
             default: ?>
                 <input class="<?php echo $field_class; ?>" type="<?php echo $field_type; ?>" name="<?php echo $setting_name; ?>" id="<?php echo $setting_name; ?>" value="<?php echo esc_attr($setting_value); ?>" />

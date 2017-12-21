@@ -119,12 +119,13 @@ class Review_For_Criteria_Admin_Pages_Settings
         if ($this->plugin_screen_hook_suffix['settings'] == $screen->id) {
             wp_enqueue_style('wp-color-picker');
             wp_enqueue_style('thickbox');
-
+	        wp_enqueue_style('rfc-jquery-ui', plugins_url('assets/css/jquery-ui.css', __FILE__));
+	        wp_enqueue_style('rfc-jquery-ui', plugins_url('assets/css/jquery-ui.theme.css', __FILE__));
             // Settings Page CSS
             wp_enqueue_style($this->plugin_slug . '-plugin-settings-styles', plugins_url('assets/css/settings.css', __FILE__), array(), $this->plugin_version);
 
             // Main Admin JS Script
-            wp_register_script($this->plugin_slug . '-settings-script', plugins_url('assets/js/settings.js', __FILE__), array('jquery', 'wp-color-picker', 'thickbox'), $this->plugin_version);
+            wp_register_script($this->plugin_slug . '-settings-script', plugins_url('assets/js/settings.js', __FILE__), array('jquery', 'wp-color-picker', 'thickbox', 'jquery-ui-dialog'), $this->plugin_version);
             wp_enqueue_script($this->plugin_slug . '-settings-script');
         }
         /* ----- End Module: Settings ----- */

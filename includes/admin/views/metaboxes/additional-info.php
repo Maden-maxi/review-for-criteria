@@ -14,3 +14,18 @@
     <?php endforeach; ?>
 
 </table>
+
+<div id="overall-rating">
+	<?php
+	$query = new WP_Query( array(
+		'post_type' => 'reviews',
+		'meta_query' => array(
+			array(
+				'key' => '_review_storage_value',
+				'value' => $post->ID
+			)
+		)
+	) );
+	var_dump($query->post_count);
+	?>
+</div>

@@ -31,6 +31,7 @@ defined('ABSPATH') or die("Direct access to the script does not allowed");
  * Plugin Constants
  *----------------------------------------------------------------------------*/
 define('RFC_PLUGIN_PATH', plugin_dir_path(__FILE__  ));
+define('RFC_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('RFC_PLUGIN_DOMAIN', 'review-for-criteria');
 /*----------------------------------------------------------------------------*
  * * * ATTENTION! * * *

@@ -1,0 +1,12 @@
+.ui-tabs-active a {
+    background-color: #fff;
+}
+li.ui-state-default {
+    margin-bottom:  0;
+}
+.form-table-th-padding th {
+    padding: 15px 10px;
+}
+.form-table-th-padding tbody tr:nth-child(2n-1) {
+    background-color: #ffe;
+}
