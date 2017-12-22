@@ -91,6 +91,7 @@ class Review_For_Criteria_Metaboxes
 	);
 	private $criteria;
 	private $criteria_prefix = 'criteria_';
+	private $criteria_overall = 'overall';
 	/**
 	 * Review_For_Criteria_Metaboxes constructor.
 	 */
@@ -109,7 +110,7 @@ class Review_For_Criteria_Metaboxes
 		if ($slug === 'post.php' || $slug === 'post-new.php') {
 
 			if ($post_type === 'entries') {
-
+				wp_enqueue_style(RFC_PLUGIN_DOMAIN . '-star-rating', RFC_PLUGIN_URL . '.assets/star-rating.css');
 			}
 
 			if ($post_type === 'reviews') {
@@ -202,6 +203,8 @@ class Review_For_Criteria_Metaboxes
 			$key = $this->criteria_prefix . str_replace(' ', '_', trim( strtolower($field->criteria) ));
 			$this->save_field($post_id , $key);
 		}
+
+		$this->save_field($post_id , $this->criteria_prefix . $this->criteria_overall);
 	}
 
 	/**
