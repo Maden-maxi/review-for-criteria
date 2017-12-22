@@ -42,6 +42,10 @@ label {
     color: #ffd700;
 } /* hover previous stars in list */
 
+input[type=radio]:checked+label:before {
+    color: #ffd700;
+}
+
 .rating > input:checked + label:hover,
     /* hover current star when changing rating */
 .rating
