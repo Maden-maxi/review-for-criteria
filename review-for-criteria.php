@@ -42,10 +42,11 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 /*----------------------------------------------------------------------------*/
 
+/* ----- Plugin Module: Functions ----- */
+require_once __DIR__ . '/includes/constants.php';
 /*----------------------------------------------------------------------------*
  * Plugin Settings
  *----------------------------------------------------------------------------*/
-
 /* ----- Plugin Module: Settings ----- */
 require_once RFC_PLUGIN_PATH . 'includes/class-review-for-criteria-settings.php';
 

@@ -63,7 +63,7 @@
         $max_rating = 5;
 
         $overall = array(
-            'max_rw' => 0,
+            'max_review_weight' => 0,
             'rating' => 0,
             'weight' => 0,
             'value' => 0,
@@ -72,7 +72,7 @@
         foreach ($criteria as $crit):
             $crit_name = $this->criteria_prefix . str_replace(' ', '_', trim( strtolower($crit->criteria) ));
             $curr_val = get_post_meta($post->ID, '_' . $crit_name, true);
-            $overall['max_rw'] += ($max_rating * $crit->weight);
+            $overall['max_review_weight'] += ($max_rating * $crit->weight);
             $overall['rating'] += ($curr_val * $crit->weight);
             $overall['weight'] += $crit->weight;
             $overall['value'] += $curr_val;
@@ -83,27 +83,16 @@
                 <td><?php echo $crit->explanation ?></td>
                 <td><?php echo $crit->weight ?>%</td>
                 <td>
-                    <fieldset class="rating">
-                        <input type="radio" <?php checked(5, $curr_val) ?> id="<?php echo esc_attr($crit_name) ?>_star5" name="<?php echo esc_attr($crit_name) ?>" value="5" /><label class = "full" for="<?php echo esc_attr($crit_name) ?>_star5" title="Awesome - 5 stars"></label>
-                        <input type="radio" <?php checked(4.5, $curr_val) ?> id="<?php echo esc_attr($crit_name) ?>_star4half" name="<?php echo esc_attr($crit_name) ?>" value="4.5" /><label class="half" for="<?php echo esc_attr($crit_name) ?>_star4half" title="Pretty good - 4.5 stars"></label>
-                        <input type="radio" <?php checked(4, $curr_val) ?> id="<?php echo esc_attr($crit_name) ?>_star4" name="<?php echo esc_attr($crit_name) ?>" value="4" /><label class = "full" for="<?php echo esc_attr($crit_name) ?>_star4" title="Pretty good - 4 stars"></label>
-                        <input type="radio" <?php checked(3.5, $curr_val) ?> id="<?php echo esc_attr($crit_name) ?>_star3half" name="<?php echo esc_attr($crit_name) ?>" value="3.5" /><label class="half" for="<?php echo esc_attr($crit_name) ?>_star3half" title="Meh - 3.5 stars"></label>
-                        <input type="radio" <?php checked(3, $curr_val) ?> id="<?php echo esc_attr($crit_name) ?>_star3" name="<?php echo esc_attr($crit_name) ?>" value="3" /><label class = "full" for="<?php echo esc_attr($crit_name) ?>_star3" title="Meh - 3 stars"></label>
-                        <input type="radio" <?php checked(2.5, $curr_val) ?> id="<?php echo esc_attr($crit_name) ?>_star2half" name="<?php echo esc_attr($crit_name) ?>" value="2.5" /><label class="half" for="<?php echo esc_attr($crit_name) ?>_star2half" title="Kinda bad - 2.5 stars"></label>
-                        <input type="radio" <?php checked(2, $curr_val) ?> id="<?php echo esc_attr($crit_name) ?>_star2" name="<?php echo esc_attr($crit_name) ?>" value="2" /><label class = "full" for="<?php echo esc_attr($crit_name) ?>_star2" title="Kinda bad - 2 stars"></label>
-                        <input type="radio" <?php checked(1.5, $curr_val) ?> id="<?php echo esc_attr($crit_name) ?>_star1half" name="<?php echo esc_attr($crit_name) ?>" value="1.5" /><label class="half" for="<?php echo esc_attr($crit_name) ?>_star1half" title="Meh - 1.5 stars"></label>
-                        <input type="radio" <?php checked(1, $curr_val) ?> id="<?php echo esc_attr($crit_name) ?>_star1" name="<?php echo esc_attr($crit_name) ?>" value="1" /><label class = "full" for="<?php echo esc_attr($crit_name) ?>_star1" title="Sucks big time - 1 star"></label>
-                        <input type="radio" <?php checked(0.5, $curr_val) ?> id="<?php echo esc_attr($crit_name) ?>_starhalf" name="<?php echo esc_attr($crit_name) ?>" value="0.5" /><label class="half" for="<?php echo esc_attr($crit_name) ?>_starhalf" title="Sucks big time - 0.5 stars"></label>
-                    </fieldset>
+                    <?php rfc_star_rating($curr_val, $crit_name) ?>
                 </td>
                 <td><?php echo $curr_val; ?></td>
             </tr>
 
     <?php endforeach; ?>
     <?php
-    $orr_key = $this->criteria_prefix . $this->criteria_overall;
-    $overall['orr'] = $overall['rating'] / $overall['max_rw'];
-    $overall_review_rating = $overall['orr'];
+    $overall_review_rating_key = $this->criteria_prefix . $this->criteria_overall;
+    $overall['overall_review_rating'] = $overall['rating'] / $overall['max_review_weight'];
+    $overall_review_rating = $overall['overall_review_rating'];
     $orr_v = round($overall_review_rating * 10);
     ?>
         <tr>
@@ -111,21 +100,15 @@
             <td> </td>
             <td> </td>
             <td>
-                <input type="hidden" name="<?php echo $orr_key ?>" value="<?php echo $overall['orr']; ?>">
-                <fieldset class="rating rating-readonly">
-                    <input type="radio" <?php checked(10, $orr_v) ?> id="<?php echo esc_attr($orr_key) ?>_star5" name="<?php echo esc_attr($orr_key) ?>_" value="5" /><label class = "full" for="<?php echo esc_attr($orr_key) ?>_star5" title="Awesome - 5 stars"></label>
-                    <input type="radio" <?php checked(9, $orr_v) ?> id="<?php echo esc_attr($orr_key) ?>_star4half" name="<?php echo esc_attr($orr_key) ?>_" value="4.5" /><label class="half" for="<?php echo esc_attr($orr_key) ?>_star4half" title="Pretty good - 4.5 stars"></label>
-                    <input type="radio" <?php checked(8, $orr_v) ?> id="<?php echo esc_attr($orr_key) ?>_star4" name="<?php echo esc_attr($orr_key) ?>_" value="4" /><label class = "full" for="<?php echo esc_attr($orr_key) ?>_star4" title="Pretty good - 4 stars"></label>
-                    <input type="radio" <?php checked(7, $orr_v) ?> id="<?php echo esc_attr($orr_key) ?>_star3half" name="<?php echo esc_attr($orr_key) ?>_" value="3.5" /><label class="half" for="<?php echo esc_attr($orr_key) ?>_star3half" title="Meh - 3.5 stars"></label>
-                    <input type="radio" <?php checked(6, $orr_v) ?> id="<?php echo esc_attr($orr_key) ?>_star3" name="<?php echo esc_attr($orr_key) ?>_" value="3" /><label class = "full" for="<?php echo esc_attr($orr_key) ?>_star3" title="Meh - 3 stars"></label>
-                    <input type="radio" <?php checked(5, $orr_v) ?> id="<?php echo esc_attr($orr_key) ?>_star2half" name="<?php echo esc_attr($orr_key) ?>_" value="2.5" /><label class="half" for="<?php echo esc_attr($orr_key) ?>_star2half" title="Kinda bad - 2.5 stars"></label>
-                    <input type="radio" <?php checked(4, $orr_v) ?> id="<?php echo esc_attr($orr_key) ?>_star2" name="<?php echo esc_attr($orr_key) ?>_" value="2" /><label class = "full" for="<?php echo esc_attr($orr_key) ?>_star2" title="Kinda bad - 2 stars"></label>
-                    <input type="radio" <?php checked(3, $orr_v) ?> id="<?php echo esc_attr($orr_key) ?>_star1half" name="<?php echo esc_attr($orr_key) ?>_" value="1.5" /><label class="half" for="<?php echo esc_attr($orr_key) ?>_star1half" title="Meh - 1.5 stars"></label>
-                    <input type="radio" <?php checked(2, $orr_v) ?> id="<?php echo esc_attr($orr_key) ?>_star1" name="<?php echo esc_attr($orr_key) ?>_" value="1" /><label class = "full" for="<?php echo esc_attr($orr_key) ?>_star1" title="Sucks big time - 1 star"></label>
-                    <input type="radio" <?php checked(1, $orr_v) ?> id="<?php echo esc_attr($orr_key) ?>_starhalf" name="<?php echo esc_attr($orr_key) ?>_" value="0.5" /><label class="half" for="<?php echo esc_attr($orr_key) ?>_starhalf" title="Sucks big time - 0.5 stars"></label>
-                </fieldset>
+                <input type="hidden" name="<?php echo $overall_review_rating_key ?>" value="<?php echo $overall['overall_review_rating']; ?>">
+                <?php
+                rfc_star_rating($orr_v, 'rfc_sr', array(
+                    'type' => 'overall_all',
+                    'readonly' => true
+                ));
+                ?>
             </td>
-            <td><?php echo $overall['orr']; ?></td>
+            <td><?php echo $overall['overall_review_rating']; ?></td>
         </tr>
         </tbody>
     </table>

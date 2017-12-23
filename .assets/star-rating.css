@@ -42,7 +42,7 @@ label {
     color: #ffd700;
 } /* hover previous stars in list */
 
-input[type=radio]:checked+label:before {
+.rating > input[type=radio]:checked+label:before {
     color: #ffd700;
 }
 
