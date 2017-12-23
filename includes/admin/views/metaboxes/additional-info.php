@@ -70,7 +70,7 @@
                 <td>
                     <?php
                     $crit_name = $crit_key . str_replace(' ', '_', trim( strtolower($value->criteria) ));
-                    $overall_review_criteria_rating = $value->value / $query->post_count;
+                    $overall_review_criteria_rating = $query->post_count ? $value->value / $query->post_count : 0;
                     // $overall_review_criteria_rating = round($overall_review_criteria_rating * 10);
                     rfc_star_rating($overall_review_criteria_rating, $crit_name, array(
 	                    'readonly' => true,
@@ -87,8 +87,8 @@
                 <td></td>
                 <td>
                     <?php
-                    $overall_review_rating = $ov / $query->post_count;
-                    $overall_review_rating = round($overall_review_rating * 10);
+                    $overall_review_rating_value = $query->post_count ? $ov / $query->post_count : 0;
+                    $overall_review_rating = round($overall_review_rating_value * 10);
 
                     $orr_key = 'star';
                     rfc_star_rating($overall_review_rating, $orr_key, array(
@@ -98,7 +98,7 @@
                     ?>
                 </td>
                 <td>
-                    <?php  echo $ov / $query->post_count; ?>
+                    <?php  echo $overall_review_rating_value; ?>
                 </td>
             </tr>
         </tbody>

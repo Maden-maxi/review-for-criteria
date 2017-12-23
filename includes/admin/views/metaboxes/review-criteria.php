@@ -72,6 +72,7 @@
         foreach ($criteria as $crit):
             $crit_name = $this->criteria_prefix . str_replace(' ', '_', trim( strtolower($crit->criteria) ));
             $curr_val = get_post_meta($post->ID, '_' . $crit_name, true);
+            $curr_val = $curr_val ? $curr_val : 0;
             $overall['max_review_weight'] += ($max_rating * $crit->weight);
             $overall['rating'] += ($curr_val * $crit->weight);
             $overall['weight'] += $crit->weight;
