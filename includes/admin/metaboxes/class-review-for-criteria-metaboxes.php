@@ -80,7 +80,7 @@ class Review_For_Criteria_Metaboxes
 			'label' => 'Facilities'
 		),
 		'locations' => array(
-			'label' => 'Facilities'
+			'label' => 'Locations'
 		),
 		'price' => array(
 			'label' => 'Price'
@@ -100,11 +100,12 @@ class Review_For_Criteria_Metaboxes
 		add_action( 'add_meta_boxes', array( $this, 'add_metabox' ) );
 		add_action( 'save_post', array( $this, 'save_storage' ) );
 		add_action( 'save_post', array( $this, 'save_review' ) );
-		add_action( 'admin_enqueue_scripts', array($this, 'assets') );
+		add_action( 'admin_enqueue_scripts', array($this, 'assets_admin') );
+		add_action( 'wp_enqueue_scripts', array($this, 'assets_public') );
 
 	}
 
-	public function assets($slug) {
+	public function assets_admin($slug) {
 		$post_type = get_post_type();
 
 		if ($slug === 'post.php' || $slug === 'post-new.php') {
@@ -136,6 +137,9 @@ class Review_For_Criteria_Metaboxes
 
 		}
 
+	}
+	public function assets_public() {
+		wp_enqueue_style(RFC_PLUGIN_DOMAIN . '-star-rating', RFC_PLUGIN_URL . '.assets/star-rating.css');
 	}
 
 	public function add_metabox() {

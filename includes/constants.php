@@ -60,11 +60,14 @@ function rfc_star_rating($current_value, $field_name = 'rfc_star_rating', $args 
 	$args = wp_parse_args($args, array(
 		'readonly' => false,
 		'stars' => $stars,
-		'type' => 'simple', // simple | overall_all | overall_single
+		'type' => 'simple', // simple | overall_all | overall_single,
+        'size' => 0
 	));
+
 
 	switch ($args['type']) {
 		case 'overall_all':
+			$current_value = round($current_value * 10);
 			foreach ($args['stars'] as $i => $star) {
 				$v = $i + 1;
 				$args['stars'][$i]['checked'] = $v;
@@ -80,11 +83,13 @@ function rfc_star_rating($current_value, $field_name = 'rfc_star_rating', $args 
 
 	$args['stars'] = array_reverse($args['stars']);
 	$toggler = true;
+	$size = $args['size'] ? ' rating_x' . $args['size'] : '';
 	?>
-	<fieldset class="rating<?php echo esc_attr($args['readonly'] ? ' rating-readonly' : '') ?>">
+	<fieldset class="rating<?php echo esc_attr($args['readonly'] ? ' rating-readonly' : '') . $size ?>">
 		<?php foreach ($args['stars'] as $index => $star): ?>
 			<input type="radio"
 					<?php
+                        $name_attr = $field_name ? ' name="' . esc_attr($field_name) . '" ' : '';
 						if ($args['type'] === 'overall_single') {
 							checked(in_range($current_value,$star['checked'] - 0.5, $star['checked'] ) );
 						} else {
@@ -94,7 +99,7 @@ function rfc_star_rating($current_value, $field_name = 'rfc_star_rating', $args 
 					?>
 				data-val="<?php echo esc_attr($star['value']) ?>"
 			       id="<?php echo esc_attr($field_id) ?>_star<?php echo esc_attr($index) ?>"
-			       name="<?php echo esc_attr($field_name) ?>"
+			       <?php echo $name_attr ?>
 			       value="<?php echo esc_attr($star['value']) ?>" />
 			<label class ="<?php echo esc_attr($toggler ? 'full' : 'half'); ?>"
 			       for="<?php echo esc_attr($field_id) ?>_star<?php echo esc_attr($index) ?>"
@@ -105,4 +110,43 @@ function rfc_star_rating($current_value, $field_name = 'rfc_star_rating', $args 
 		?>
 	</fieldset>
 	<?php
+}
+
+function rfc_table_star_rating($post_id) {
+
+$criteria = json_decode(get_option('review_for_criteria_options'));
+?>
+<table class="rfc-star-rating-table">
+    <tr>
+        <th colspan="2">Editor's Rating</th>
+    </tr>
+	<?php
+	foreach ($criteria as $k => $v): ?>
+		<?php
+		$crit_name = 'criteria_' . str_replace(' ', '_', trim( strtolower($v->criteria) ));
+		$rating = $curr_val = get_post_meta($post_id, '_' . $crit_name, true);
+		?>
+        <tr>
+            <td><?php echo $v->criteria ?></td>
+            <td>
+				<?php rfc_star_rating($rating, '', array(
+					'readonly' => true
+				)); ?>
+            </td>
+        </tr>
+	<?php endforeach; ?>
+    <tr>
+        <td>Overall Rating</td>
+        <td>
+			<?php
+			$rating = get_post_meta($post_id, '_criteria_overall', true);
+
+			rfc_star_rating($rating, 'rfc_stars', array(
+				'type' => 'overall_all',
+				'readonly' => true
+			)); ?>
+        </td>
+    </tr>
+</table>
+<?php
 }

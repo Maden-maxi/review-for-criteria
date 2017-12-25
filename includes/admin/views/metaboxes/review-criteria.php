@@ -36,7 +36,8 @@
 
 	?>
         <div id="<?php echo $el_key_tab . '_tab' ?>">
-            <textarea name="<?php echo $el_key_tab ?>" id="<?php echo $el_key_tab ?>" cols="30" rows="10"><?php echo $el_key_tab_value ?></textarea>
+            <?php wp_editor($el_key_tab_value, $el_key_tab) ?>
+
         </div>
 	<?php endforeach; ?>
 </div>
@@ -94,7 +95,7 @@
     $overall_review_rating_key = $this->criteria_prefix . $this->criteria_overall;
     $overall['overall_review_rating'] = $overall['rating'] / $overall['max_review_weight'];
     $overall_review_rating = $overall['overall_review_rating'];
-    $orr_v = round($overall_review_rating * 10);
+
     ?>
         <tr>
             <td>Overall Review Rating</td>
@@ -103,7 +104,7 @@
             <td>
                 <input type="hidden" name="<?php echo $overall_review_rating_key ?>" value="<?php echo $overall['overall_review_rating']; ?>">
                 <?php
-                rfc_star_rating($orr_v, 'rfc_sr', array(
+                rfc_star_rating($overall_review_rating, 'rfc_sr', array(
                     'type' => 'overall_all',
                     'readonly' => true
                 ));
