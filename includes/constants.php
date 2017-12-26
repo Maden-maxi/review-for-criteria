@@ -97,7 +97,8 @@ function rfc_star_rating($current_value, $field_name = 'rfc_star_rating', $args 
 						}
 
 					?>
-				data-val="<?php echo esc_attr($star['value']) ?>"
+                   data-val="<?php echo esc_attr($star['value']) ?>"
+                   data-current="<?php echo esc_attr($current_value) ?>"
 			       id="<?php echo esc_attr($field_id) ?>_star<?php echo esc_attr($index) ?>"
 			       <?php echo $name_attr ?>
 			       value="<?php echo esc_attr($star['value']) ?>" />
