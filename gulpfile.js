@@ -70,7 +70,7 @@ var
     replace = require('gulp-replace'),
     deletefile = require('gulp-delete-file'),
     //css
-    minifyCss = require('gulp-minify-css'),
+    minifyCss = require('gulp-clean-css'),
     // scripts
     uglify = require('gulp-uglify');
 
